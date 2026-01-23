@@ -2,13 +2,11 @@
 
 <div align="center">
   <picture>
-    <source srcset="Saviour/assets/images/Saviour2.png" media="(prefers-color-scheme: dark)" />
+    <source srcset="Saviour/assets/images/Saviour.png" media="(prefers-color-scheme: dark)" />
     <source srcset="Saviour/assets/images/Saviour.png" media="(prefers-color-scheme: light)" />
     <img src="Saviour/assets/images/Saviour.png" alt="Saviour Logo" width="300px" />
   </picture>
-  <h3>Empowering communities to prepare, respond, and recover from disasters</h3>
 </div>
-
 ---
 
 ## 🚀 Overview
