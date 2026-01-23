@@ -179,7 +179,3 @@ Then open a Pull Request 🚀
 <div align="center">
   <sub>Built with ❤️ by the SAVIOUR Team</sub>
 </div>
-
-```
-
----
