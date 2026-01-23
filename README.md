@@ -143,25 +143,43 @@ Then open a Pull Request 🚀
 
 ---
 
-## 📄 License
+## 🤝 Contributors
 
-This project is licensed under the **MIT License**.
-
----
-
-## 👥 Contributors 
-| Name                  | GitHub / LinkedIn                                                                                          |
-| --------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Gunti Ravi Kumar**  | [https://github.com/Ravikumar-2016](https://github.com/Ravikumar-2016)                                     |
-| **Vikrant Kumar**     | [https://github.com/vikrantwiz02](https://github.com/vikrantwiz02)                                         |
-| **Harsh Kumar Palas** | [https://github.com/harshpalas](https://github.com/harshpalas)                                             |
-| **Anchal Patil**      | [https://www.linkedin.com/in/anchal-patil-67b18a299/](https://www.linkedin.com/in/anchal-patil-67b18a299/) |
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Ravikumar-2016">
+        <img src="https://github.com/Ravikumar-2016.png" width="100px" />
+        <br><b>Gunti Ravi Kumar</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/vikrantwiz02">
+        <img src="https://github.com/vikrantwiz02.png" width="100px" />
+        <br><b>Vikrant Kumar</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/harshpalas">
+        <img src="https://github.com/harshpalas.png" width="100px" />
+        <br><b>Harsh Kumar Palas</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Anchalpatil27">
+        <img src="https://github.com/Anchalpatil27.png" width="100px" />
+        <br><b>Anchal Siddharth Patil</b>
+      </a>
+    </td>
+  </tr>
+</table>
 
 ---
 
 <div align="center">
   <sub>Built with ❤️ by the SAVIOUR Team</sub>
 </div>
+
 ```
 
 ---
