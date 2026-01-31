@@ -1,7 +1,7 @@
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Ionicons, MaterialCommunityIcons, FontAwesome, Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React, { useState, useEffect } from "react";
+import { useColorScheme } from "@/hooks/useColorScheme"
+import { Ionicons, MaterialCommunityIcons, FontAwesome, Feather } from "@expo/vector-icons"
+import { useRouter } from "expo-router"
+import React, { useState, useEffect } from "react"
 import {
   Alert,
   Dimensions,
@@ -14,16 +14,17 @@ import {
   ScrollView,
   RefreshControl,
   Platform,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import * as Location from "expo-location";
-import axios from "axios";
-import { collection, getDocs, query, orderBy, doc, getDoc, where } from "firebase/firestore";
-import { db } from "../../lib/firebase";
-import { useAuth } from "@/context/AuthContext";
-import MapView, { Heatmap, PROVIDER_GOOGLE } from "react-native-maps";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import { LinearGradient } from "expo-linear-gradient";
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import * as Location from "expo-location"
+import axios from "axios"
+import { collection, getDocs, query, orderBy, doc, getDoc, where } from "firebase/firestore"
+import { db } from "../../lib/firebase"
+import { useAuth } from "@/context/AuthContext"
+import MapView, { Heatmap, PROVIDER_GOOGLE } from "react-native-maps"
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
+import { LinearGradient } from "expo-linear-gradient"
+import { logger } from "@/lib/logger"
 
 const { width } = Dimensions.get("window");
 const isTablet = width >= 768;
@@ -223,11 +224,11 @@ export default function HomeScreen() {
       await fetchSOS();
 
       // Fetch responded SOS for this user
-      await fetchSOSResponses();
-    } catch (e) {
-      console.error("Error fetching data:", e);
+      await fetchSOSResponses()
+    } catch (error) {
+      logger.error("Error fetching data:", error)
     }
-  };
+  }
 
   // Fetch SOS requests
   const fetchSOS = async () => {
@@ -263,14 +264,14 @@ export default function HomeScreen() {
           longitude: request.location.longitude,
           weight: request.urgency === "High" ? 0.8 : request.urgency === "Medium" ? 0.5 : 0.3
         }));
-        setHeatmapData(heatmapPoints);
+        setHeatmapData(heatmapPoints)
       }
-    } catch (e) {
-      console.error("Error fetching SOS requests:", e);
+    } catch (error) {
+      logger.error("Error fetching SOS requests:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   // Fetch responded SOS for this user
   const fetchSOSResponses = async () => {
@@ -304,11 +305,11 @@ export default function HomeScreen() {
           respondedAt: data.respondedAt,
         });
       });
-      setSosResponses(responses);
-    } catch (e) {
-      console.error("Error fetching responded SOS:", e);
+      setSosResponses(responses)
+    } catch (error) {
+      logger.error("Error fetching responded SOS:", error)
     }
-  };
+  }
 
   useEffect(() => {
     fetchAll();

@@ -23,6 +23,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { auth, db } from "../../lib/firebase"
 import * as GoogleAuth from "expo-auth-session/providers/google"
 import * as WebBrowser from "expo-web-browser"
+import { logger } from "@/lib/logger"
 
 const USER_ROLES = ["users", "employee", "admin"] as const
 type UserRole = (typeof USER_ROLES)[number]
@@ -88,8 +89,8 @@ export default function LoginScreen() {
               }
             })
           }
-        } catch (error: any) {
-          console.error(error)
+        } catch (error) {
+          logger.error("Google login error:", error)
           Alert.alert("Google Login Failed", "Could not log in with Google.")
         } finally {
           setGoogleLoading(false)

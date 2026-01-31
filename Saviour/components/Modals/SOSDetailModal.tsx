@@ -8,10 +8,18 @@ import { getAuth } from "firebase/auth"
 import { db } from "@/lib/firebase"
 import { doc, updateDoc, getDoc, serverTimestamp, addDoc, collection } from "firebase/firestore"
 import React, { useState } from "react"
+import { logger } from "@/lib/logger"
+
+interface SOSAlert {
+  id: string
+  userId: string
+  senderContact?: string
+  [key: string]: any
+}
 
 type SOSDetailModalProps = {
   isVisible: boolean
-  sosAlert: any // Replace 'any' with a proper SOSAlert type
+  sosAlert: SOSAlert | null
   onClose: () => void
   onAccept: (sosId: string) => void
 }
@@ -40,68 +48,75 @@ export default function SOSDetailModal({ isVisible, sosAlert, onClose, onAccept 
 
   // Accept & Respond logic
   const handleAcceptRespond = async () => {
-  if (loading) return;
-  setLoading(true);
-  try {
-    console.log("Attempting to respond to SOS:", sosAlert.id);
+    if (loading) return
+    setLoading(true)
+    try {
+      logger.debug("Attempting to respond to SOS:", sosAlert?.id)
 
-    if (!currentUser) {
-      Alert.alert("Error", "You must be logged in to respond.");
-      setLoading(false);
-      return;
+      if (!currentUser) {
+        Alert.alert("Error", "You must be logged in to respond.")
+        setLoading(false)
+        return
+      }
+
+      if (!sosAlert) {
+        Alert.alert("Error", "SOS alert is not available.")
+        setLoading(false)
+        return
+      }
+
+      // Check if SOS document exists
+      const sosDocRef = doc(db, "sos_requests", sosAlert.id)
+      logger.debug("Getting SOS doc ref:", sosDocRef.path)
+      const sosDocSnap = await getDoc(sosDocRef)
+      if (!sosDocSnap.exists()) {
+        Alert.alert("Error", "SOS request not found.")
+        setLoading(false)
+        return
+      }
+      logger.debug("SOS doc exists, proceeding to update...")
+
+      // Fetch responder profile
+      const userDoc = await getDoc(doc(db, "users", currentUser.uid))
+      const userData = userDoc.exists() ? userDoc.data() : {}
+      const responderName = userData.fullName || userData.name || currentUser.displayName || currentUser.email || "Unknown"
+      const responderRole = userData.role || "user"
+
+      // Update SOS with responder info
+      await updateDoc(sosDocRef, {
+        status: "responded",
+        responderId: currentUser.uid,
+        responderName,
+        responderRole,
+        respondedAt: serverTimestamp(),
+      })
+      logger.debug("SOS document updated in Firestore!")
+
+      // Add notification
+      await addDoc(collection(db, "notifications"), {
+        toUserId: sosAlert.userId,
+        sosId: sosAlert.id,
+        type: "sos_responded",
+        message: `Your SOS has been accepted and responded, help is on the way by ${responderName} (${responderRole === "employee" ? "Helper" : responderRole === "responder" ? "Rescuer" : "User"}).`,
+        responderId: currentUser.uid,
+        responderName,
+        responderRole,
+        createdAt: serverTimestamp(),
+        read: false,
+      })
+      logger.debug("Notification added!")
+
+      Alert.alert("Accepted", "You have accepted and responded to this SOS.")
+      onAccept(sosAlert.id)
+      onClose()
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred"
+      logger.error("Error in handleAcceptRespond:", error)
+      Alert.alert("Error", `Failed to accept and respond. ${errorMessage}`)
+    } finally {
+      setLoading(false)
     }
-
-    // Check if SOS document exists
-    const sosDocRef = doc(db, "sos_requests", sosAlert.id);
-    console.log("Getting SOS doc ref:", sosDocRef.path);
-    const sosDocSnap = await getDoc(sosDocRef);
-    if (!sosDocSnap.exists()) {
-      Alert.alert("Error", "SOS request not found.");
-      setLoading(false);
-      return;
-    }
-    console.log("SOS doc exists, proceeding to update...");
-
-    // Fetch responder profile
-    const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-    const userData = userDoc.exists() ? userDoc.data() : {};
-    const responderName = userData.fullName || userData.name || currentUser.displayName || currentUser.email || "Unknown";
-    const responderRole = userData.role || "user";
-
-    // Update SOS with responder info
-    await updateDoc(sosDocRef, {
-      status: "responded",
-      responderId: currentUser.uid,
-      responderName,
-      responderRole,
-      respondedAt: serverTimestamp(),
-    });
-    console.log("SOS document updated in Firestore!");
-
-    // Add notification (optional)
-    await addDoc(collection(db, "notifications"), {
-      toUserId: sosAlert.userId,
-      sosId: sosAlert.id,
-      type: "sos_responded",
-      message: `Your SOS has been accepted and responded, help is on the way by ${responderName} (${responderRole === "employee" ? "Helper" : responderRole === "responder" ? "Rescuer" : "User"}).`,
-      responderId: currentUser.uid,
-      responderName,
-      responderRole,
-      createdAt: serverTimestamp(),
-      read: false,
-    });
-    console.log("Notification added!");
-
-    Alert.alert("Accepted", "You have accepted and responded to this SOS.");
-    onAccept(sosAlert.id);
-    onClose();
-  } catch (e: any) {
-    console.error("Error in handleAcceptRespond:", e);
-    Alert.alert("Error", "Failed to accept and respond. " + (e?.message || ""));
-  } finally {
-    setLoading(false);
   }
-};
 
   return (
     <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>

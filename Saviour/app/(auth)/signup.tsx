@@ -25,6 +25,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore"
 import { auth, db } from "../../lib/firebase"
 import * as GoogleAuth from "expo-auth-session/providers/google"
 import * as WebBrowser from "expo-web-browser"
+import { logger } from "@/lib/logger"
 
 const GOOGLE_WEB_CLIENT_ID = "1012376360740-7egjvkecijotophpbhnsvc5flbsr75vm.apps.googleusercontent.com"
 
@@ -70,7 +71,7 @@ export default function SignupScreen() {
             Alert.alert("Almost done!", "Please fill in the required details to complete your signup.")
           }
         } catch (error: any) {
-          console.error(error)
+          logger.error("Google signup error:", error)
           Alert.alert("Google Signup Failed", "Could not sign up with Google.")
         } finally {
           setGoogleLoading(false)

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, TextInput, Alert, TextStyle, ViewStyle } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { EmergencyType, UrgencyLevel } from "./types";
-import { EmergencyTypePicker } from "@/components/ui/EmergencyTypePicker";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import * as Location from "expo-location";
-import { auth, db } from "@/lib/firebase";
+import React, { useState } from "react"
+import { View, StyleSheet, TouchableOpacity, TextInput, Alert, TextStyle, ViewStyle } from "react-native"
+import { ThemedText } from "@/components/ThemedText"
+import { ThemedView } from "@/components/ThemedView"
+import { IconSymbol } from "@/components/ui/IconSymbol"
+import { Colors } from "@/constants/Colors"
+import { useColorScheme } from "@/hooks/useColorScheme"
+import { EmergencyType, UrgencyLevel } from "./types"
+import { EmergencyTypePicker } from "@/components/ui/EmergencyTypePicker"
+import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import * as Location from "expo-location"
+import { auth, db } from "@/lib/firebase"
+import { logger } from "@/lib/logger"
 
 interface SOSCreationProps {
   visible: boolean;
@@ -87,13 +88,14 @@ export const SOSCreation: React.FC<SOSCreationProps> = ({
         createdAt: serverTimestamp(),
       });
 
-      onSuccess();
-      onClose();
+      onSuccess()
+      onClose()
     } catch (error) {
-      console.error("Error creating SOS:", error);
-      Alert.alert("Error", "Failed to create SOS request");
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      logger.error("Error creating SOS:", error)
+      Alert.alert("Error", `Failed to create SOS request: ${errorMessage}`)
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
   };
 

@@ -1,8 +1,8 @@
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import React, { useEffect, useState } from "react";
+import { Colors } from "@/constants/Colors"
+import { useColorScheme } from "@/hooks/useColorScheme"
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons"
+import * as ImagePicker from "expo-image-picker"
+import React, { useEffect, useState } from "react"
 import {
   Alert,
   Dimensions,
@@ -19,9 +19,9 @@ import {
   ActivityIndicator,
   Animated,
   Easing,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import { getAuth, onAuthStateChanged, User } from "firebase/auth"
 import {
   collection,
   addDoc,
@@ -31,11 +31,12 @@ import {
   Timestamp,
   doc,
   getDoc,
-} from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from "../../lib/firebase";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+} from "firebase/firestore"
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { db } from "../../lib/firebase"
+import { ThemedText } from "@/components/ThemedText"
+import { ThemedView } from "@/components/ThemedView"
+import { logger } from "@/lib/logger"
 
 const { width } = Dimensions.get("window");
 const isTablet = width >= 768;
@@ -240,13 +241,14 @@ export default function IncidentReportScreen() {
       setDesc("");
       setPhoto(null);
       setOutcome(OUTCOMES[0]);
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 2000);
-    } catch (e) {
-      console.log("Incident report error:", e);
-      Alert.alert("Error", "Failed to submit report.");
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 2000)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      logger.error("Incident report error:", error)
+      Alert.alert("Error", `Failed to submit report: ${errorMessage}`)
     }
-  };
+  }
 
   // Submit moderation report to Firestore
   const handleModSubmit = async () => {
@@ -268,15 +270,16 @@ export default function IncidentReportScreen() {
         status: "Pending Review from Head",
       });
       Alert.alert("Flag Submitted", "Your moderation report has been submitted.");
-      setModModal(false);
-      setModReason("");
-      setModNotes("");
-      setModPhoto(null);
-    } catch (e) {
-      console.log("Moderation flag error:", e);
-      Alert.alert("Error", "Failed to submit moderation flag.");
+      setModModal(false)
+      setModReason("")
+      setModNotes("")
+      setModPhoto(null)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      logger.error("Moderation flag error:", error)
+      Alert.alert("Error", `Failed to submit moderation flag: ${errorMessage}`)
     }
-  };
+  }
 
   // Toggle outcome with animation
   const toggleOutcome = (selectedOutcome: string) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react"
 import {
   View,
   ActivityIndicator,
@@ -12,21 +12,22 @@ import {
   Dimensions,
   ImageBackground,
   Image,
-  Text, // <-- FIX: Import Text!
-} from "react-native";
-import { getAuth, User } from "firebase/auth";
-import { db } from "../../lib/firebase";
-import { doc, getDoc, setDoc, collection, addDoc, onSnapshot, serverTimestamp } from "firebase/firestore";
-import * as Location from "expo-location";
-import * as ImagePicker from 'expo-image-picker';
-import ChatHeader from "@/components/ChatHeader";
-import ChatInput from "@/components/ChatInput";
-import ChatMessageList from "@/components/ChatMessageList";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+  Text,
+} from "react-native"
+import { getAuth, User } from "firebase/auth"
+import { db } from "../../lib/firebase"
+import { doc, getDoc, setDoc, collection, addDoc, onSnapshot, serverTimestamp } from "firebase/firestore"
+import * as Location from "expo-location"
+import * as ImagePicker from 'expo-image-picker'
+import ChatHeader from "@/components/ChatHeader"
+import ChatInput from "@/components/ChatInput"
+import ChatMessageList from "@/components/ChatMessageList"
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons"
+import { useRouter } from "expo-router"
+import { Colors } from "@/constants/Colors"
+import { useColorScheme } from "@/hooks/useColorScheme"
+import { logger } from "@/lib/logger"
 
 const { width } = Dimensions.get("window");
 const isTablet = width >= 768;
@@ -173,7 +174,7 @@ export default function ChatScreen() {
         });
         setCity(geocode[0]?.city || null);
       } catch (error) {
-        console.error("Error getting location:", error);
+        logger.error("Error getting location:", error)
       }
     })();
   }, []);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { 
   View, 
   TextInput, 
@@ -8,14 +8,15 @@ import {
   Platform,
   ActivityIndicator,
   Alert
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth, db } from '../../lib/firebase';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+} from 'react-native'
+import { useRouter } from 'expo-router'
+import { sendPasswordResetEmail } from 'firebase/auth'
+import { auth, db } from '../../lib/firebase'
+import { ThemedView } from '@/components/ThemedView'
+import { ThemedText } from '@/components/ThemedText'
+import { Colors } from '@/constants/Colors'
+import { useColorScheme } from '@/hooks/useColorScheme'
+import { logger } from '@/lib/logger'
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -55,8 +56,8 @@ export default function ForgotPasswordScreen() {
   };
 
   const handleAuthError = (error: any) => {
-    console.error('Password reset error:', error);
-    let message = 'Failed to send reset email. Please try again.';
+    logger.error('Password reset error:', error)
+    let message = 'Failed to send reset email. Please try again.'
     
     switch(error.code) {
       case 'auth/user-not-found':

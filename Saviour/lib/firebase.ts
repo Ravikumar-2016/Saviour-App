@@ -1,7 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { initializeAuth, Auth, getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { initializeApp } from "firebase/app"
+import { initializeAuth, Auth, getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { logger } from "./logger"
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -19,13 +20,16 @@ const app = initializeApp(firebaseConfig);
 // Initialize Auth with persistence
 let auth: Auth;
 try {
-  const { getReactNativePersistence } = require("firebase/auth/react-native");
+  const { getReactNativePersistence } = require("firebase/auth/react-native")
   auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(AsyncStorage)
-  });
+    persistence: getReactNativePersistence(AsyncStorage),
+  })
 } catch (error) {
-  auth = getAuth(app);
-  console.warn("Firebase persistence not enabled:", error);
+  // Fallback to standard auth if React Native persistence is not available
+  auth = getAuth(app)
+  logger.warn(
+    "Firebase React Native persistence not available, using standard auth"
+  )
 }
 
 // Initialize Firestore

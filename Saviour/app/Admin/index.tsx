@@ -1,7 +1,7 @@
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Ionicons, MaterialCommunityIcons, FontAwesome, Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React, { useState, useEffect } from "react";
+import { useColorScheme } from "@/hooks/useColorScheme"
+import { Ionicons, MaterialCommunityIcons, FontAwesome, Feather } from "@expo/vector-icons"
+import { useRouter } from "expo-router"
+import React, { useState, useEffect } from "react"
 import {
   Alert,
   Dimensions,
@@ -14,16 +14,17 @@ import {
   ScrollView,
   RefreshControl,
   Platform,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import * as Location from "expo-location";
-import axios from "axios";
-import { collection, getDocs, query, orderBy, doc, getDoc, where } from "firebase/firestore";
-import { db } from "../../lib/firebase";
-import { useAuth } from "@/context/AuthContext";
-import MapView, { Heatmap, PROVIDER_GOOGLE } from "react-native-maps";
-import { LinearGradient } from "expo-linear-gradient";
-import Animated, { FadeIn } from "react-native-reanimated";
+} from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import * as Location from "expo-location"
+import axios from "axios"
+import { collection, getDocs, query, orderBy, doc, getDoc, where } from "firebase/firestore"
+import { db } from "../../lib/firebase"
+import { useAuth } from "@/context/AuthContext"
+import MapView, { Heatmap, PROVIDER_GOOGLE } from "react-native-maps"
+import { LinearGradient } from "expo-linear-gradient"
+import Animated, { FadeIn } from "react-native-reanimated"
+import { logger } from "@/lib/logger"
 
 const { width } = Dimensions.get("window");
 const isTablet = width >= 768;
@@ -160,25 +161,25 @@ export default function HomeScreen() {
         const weatherResp = await axios.get(
           `https://api.openweathermap.org/data/2.5/weather?lat=${loc.coords.latitude}&lon=${loc.coords.longitude}&units=metric&appid=${apiKey}`
         );
-        setWeather(weatherResp.data);
-      } catch (err) {
-        console.log("Weather error:", err);
+        setWeather(weatherResp.data)
+      } catch (error) {
+        logger.debug("Weather error:", error)
       }
 
       // Fetch profile
       if (user) {
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        if (docSnap.exists()) setProfile(docSnap.data());
+        const docSnap = await getDoc(doc(db, "users", user.uid))
+        if (docSnap.exists()) setProfile(docSnap.data())
       }
 
       // Fetch SOS requests
-      await fetchSOS();
+      await fetchSOS()
       // Fetch SOS raised count for current user
-      await fetchSosRaisedCount();
-    } catch (e) {
-      console.error("Error fetching data:", e);
+      await fetchSosRaisedCount()
+    } catch (error) {
+      logger.error("Error fetching data:", error)
     }
-  };
+  }
 
   // Fetch SOS requests (all public)
   const fetchSOS = async () => {
@@ -216,14 +217,14 @@ export default function HomeScreen() {
           longitude: request.location.longitude,
           weight: request.urgency === "High" ? 0.8 : request.urgency === "Medium" ? 0.5 : 0.3
         }));
-        setHeatmapData(heatmapPoints);
+        setHeatmapData(heatmapPoints)
       }
-    } catch (e) {
-      console.error("Error fetching SOS requests:", e);
+    } catch (error) {
+      logger.error("Error fetching SOS requests:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   // Fetch SOS raised count for current user
   const fetchSosRaisedCount = async () => {

@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, TextInput, FlatList, KeyboardAvoidingView, Platform, TouchableOpacity, SafeAreaView } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { ChatMessage } from "../Map/types";
-import { auth, db } from "@/lib/firebase";
-import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "firebase/firestore";
+import React, { useState, useEffect, useRef } from "react"
+import { View, StyleSheet, TextInput, FlatList, KeyboardAvoidingView, Platform, TouchableOpacity, SafeAreaView } from "react-native"
+import { ThemedText } from "@/components/ThemedText"
+import { ThemedView } from "@/components/ThemedView"
+import { IconSymbol } from "@/components/ui/IconSymbol"
+import { Colors } from "@/constants/Colors"
+import { useColorScheme } from "@/hooks/useColorScheme"
+import { ChatMessage } from "../Map/types"
+import { auth, db } from "@/lib/firebase"
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "firebase/firestore"
+import { logger } from "@/lib/logger"
 
 interface ChatModalProps {
   visible: boolean;
@@ -67,11 +68,13 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         createdAt: serverTimestamp(),
       });
 
-      setNewMessage("");
+      setNewMessage("")
     } catch (error) {
-      console.error("Error sending message:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
+      logger.error("Error sending message:", error)
+      logger.warn(`Failed to send message: ${errorMessage}`)
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
   };
 
