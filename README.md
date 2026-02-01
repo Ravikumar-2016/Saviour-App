@@ -145,22 +145,25 @@ Then open a Pull Request 🚀
 
 ## 🤝 Contributors
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Ravikumar-2016">
-        <img src="https://github.com/Ravikumar-2016.png" width="100px" />
-        <br><b>Gunti Ravi Kumar</b>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/vikrantwiz02">
-        <img src="https://github.com/vikrantwiz02.png" width="100px" />
-        <br><b>Vikrant Kumar</b>
-      </a>
-    </td>
-  </tr>
-</table>
+<div style="display: flex; justify-content: center;">
+  <table>
+    <tr>
+      <td align="center">
+        <a href="https://github.com/Ravikumar-2016">
+          <img src="https://github.com/Ravikumar-2016.png" width="100px" />
+          <br><b>Gunti Ravi Kumar</b>
+        </a>
+      </td>
+      <td align="center">
+        <a href="https://github.com/vikrantwiz02">
+          <img src="https://github.com/vikrantwiz02.png" width="100px" />
+          <br><b>Vikrant Kumar</b>
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
+
 
 ---
 
