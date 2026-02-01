@@ -159,18 +159,6 @@ Then open a Pull Request 🚀
         <br><b>Vikrant Kumar</b>
       </a>
     </td>
-    <td align="center">
-      <a href="https://github.com/harshpalas">
-        <img src="https://github.com/harshpalas.png" width="100px" />
-        <br><b>Harsh Kumar Palas</b>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Anchalpatil27">
-        <img src="https://github.com/Anchalpatil27.png" width="100px" />
-        <br><b>Anchal Siddharth Patil</b>
-      </a>
-    </td>
   </tr>
 </table>
 
